@@ -14,11 +14,38 @@
  [\ntnuthesisdate\space
    CC-BY CoPCSE at NTNU 2019]
 
+% Package for some reason needed before the options
+\RequirePackage{pdfpages}
 
 %% CLASS OPTIONS
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{
+  family=myclass,
+  prefix=myclass@
+}
 
-% Package for some reason needed before the options
-\RequirePackage{pdfpages}                   % including pdf files
+\DeclareBoolOption[false]{american}
+\DeclareBoolOption[false]{british}
+\DeclareBoolOption[false]{norsk}
+\DeclareBoolOption[false]{nynorsk}
+
+\ProcessKeyvalOptions*
+
+\newif\ifcapitalize
+\ifmyclass@american
+    \capitalizetrue
+\fi
+\ifmyclass@british
+    \capitalizetrue
+\fi
+\ifmyclass@norsk
+    \capitalizefalse
+\fi
+\ifmyclass@nynorsk
+    \capitalizefalse
+\fi
+
+
 
 % One or twosided paging
 \newcommand{\paging}{twoside}
@@ -35,109 +62,11 @@
     }
 }
 
-% British
-\newif\ifcapitalize
-\DeclareOption{british}{
-    \capitalizetrue
-    \def\papername{Paper}
-    \newcommand{\NTNU}{{N}orwegian {U}niversity of {S}cience and {T}echnology}
-    \newcommand{\NTNUTrondheim}{{NTNU} in {T}rondheim}
-    \newcommand{\NTNUGjoevik}{{NTNU} in {G}j\o{}vik}
-    \newcommand{\NTNUAalesund}{{NTNU} in {\AA}lesund}
-    \AtBeginDocument{
-        \renewcommand{\lstlistingname}{Code listing}
-        \renewcommand{\lstlistlistingname}{Code Listings}
-        \crefname{listing}{Code listing}{Code listings}
-        \crefname{paper}{Paper}{Papers}
-        \addto\captionsbritish{
-            \renewcommand{\contentsname}{Contents}
-            \renewcommand{\listfigurename}{Figures}
-            \renewcommand{\listtablename}{Tables}
-            \renewcommand{\glossaryname}{Glossary}
-            \renewcommand{\acronymname}{Acronyms}
-        }
-    }
-}
-
-% American
-\DeclareOption{american}{
-    \capitalizetrue
-    \def\papername{Paper}
-    \newcommand{\NTNU}{{N}orwegian {U}niversity of {S}cience and {T}echnology}
-    \newcommand{\NTNUTrondheim}{{NTNU} in {T}rondheim}
-    \newcommand{\NTNUGjoevik}{{NTNU} in {G}j\o{}vik}
-    \newcommand{\NTNUAalesund}{{NTNU} in {\AA}lesund}
-    \AtBeginDocument{
-        \renewcommand{\lstlistingname}{Code listing}
-        \renewcommand{\lstlistlistingname}{Code Listings}
-        \crefname{listing}{Code listing}{Code listings}
-        \crefname{paper}{Paper}{Papers}
-        \addto\captionsamerican{
-            \renewcommand{\contentsname}{Contents}
-            \renewcommand{\listfigurename}{Figures}
-            \renewcommand{\listtablename}{Tables}
-            \renewcommand{\glossaryname}{Glossary}
-            \renewcommand{\acronymname}{Acronyms}
-        }
-    }
-}
-
-% Bokmål
-\DeclareOption{norsk}{
-    \capitalizefalse
-    \def\papername{Artikkel}
-    \newcommand{\NTNU}{{N}orges teknisk-naturvitenskapelige universitet}
-    \newcommand{\NTNUTrondheim}{{NTNU} i {T}rondheim}
-    \newcommand{\NTNUGjoevik}{{NTNU} i {G}j\o{}vik}
-    \newcommand{\NTNUAalesund}{{NTNU} i {\AA}lesund}
-    \AtBeginDocument{
-        \renewcommand{\lstlistingname}{Kodeliste}
-        \renewcommand{\lstlistlistingname}{Kodelister}
-        \crefname{listing}{kodeliste}{kodelister}
-        \crefname{equation}{ligning}{ligninger}
-        \crefname{appendix}{vedlegg}{vedlegg}
-        \crefname{paper}{artikkel}{artikler}
-        \addto\captionsnorsk{
-            \renewcommand{\appendixname}{Vedlegg}
-            \renewcommand{\glossaryname}{Ordliste}
-            \renewcommand{\acronymname}{Akronymer}
-        }
-    }
-}
-
-% Nynorsk
-\DeclareOption{nynorsk}{
-    \capitalizefalse
-    \def\papername{Artikkel}
-    \newcommand{\NTNU}{{N}oregs teknisk-naturvitskaplege universitet}
-    \newcommand{\NTNUTrondheim}{{NTNU} i {T}rondheim}
-    \newcommand{\NTNUGjoevik}{{NTNU} i {G}j\o{}vik}
-    \newcommand{\NTNUAalesund}{{NTNU} i {\AA}lesund}
-    \AtBeginDocument{
-        \renewcommand{\lstlistingname}{Kodeliste}
-        \renewcommand{\lstlistlistingname}{Kodelister}
-        \crefname{listing}{kodeliste}{kodelister}
-        \crefname{equation}{likning}{likningar}
-        \crefname{table}{tabell}{tabellar}
-        \crefname{figure}{figur}{figurar}
-        \crefname{section}{avsnitt}{avsnitt}
-        \crefname{chapter}{kapittel}{kapittel}
-        \crefname{appendix}{vedlegg}{vedlegg}
-        \crefname{paper}{artikkel}{artiklar}
-        \renewcommand{\appendixname}{Vedlegg}
-        \addto\captionsnynorsk{
-            \renewcommand{\appendixname}{Vedlegg}
-            \renewcommand{\glossaryname}{Ordliste}
-            \renewcommand{\acronymname}{Akronym}
-        }
-    }
-}
-
 \ProcessOptions
 
 %% CLASS FILE LOADING
 
-\LoadClass[a4paper,11pt,openright,\paging]{report}
+\LoadClass[a4paper,12pt,openright,\paging]{report}
 
 %% PACKAGE LOADING
 
@@ -148,6 +77,7 @@
 \RequirePackage[scaled=.82]{DejaVuSansMono} % monospace font (for code)
 \RequirePackage{listings}                   % code listings
 \RequirePackage{etoolbox}                   % fixing list of listings spacing
+\RequirePackage{csquotes}
 \RequirePackage{babel}                      % language specifics
 \RequirePackage{geometry}                   % page layout
 \RequirePackage{enumitem}                   % customising list appearance
@@ -165,7 +95,7 @@
 ]{subcaption}
 \RequirePackage{xcolor}                     % selecting text color
 \RequirePackage{emptypage}                  % empty pages should be blank
-\RequirePackage{csquotes}                   % recommended for biblatex
+
 \RequirePackage[
     backend=biber,
     style=ieee,
@@ -179,7 +109,6 @@
 ]{biblatex}                                 % for bibliography
 \RequirePackage{csvsimple}                  % tables from csv files
 \RequirePackage{booktabs}                   % better formatting of tables
-\RequirePackage{gnuplottex}                 % for generating gnuplots on the fly
 \RequirePackage{hyperref}                   % interactive cross references
 \ifcapitalize
     \RequirePackage[capitalize,noabbrev]{cleveref}   % automatic cross references
@@ -322,3 +251,99 @@
        \@starttoc{lol}%
        \endgroup%
        }%
+
+
+% American
+\ifmyclass@american
+    \capitalizetrue
+    \def\papername{Paper}
+    \newcommand{\NTNU}{{N}orwegian {U}niversity of {S}cience and {T}echnology}
+    \newcommand{\NTNUTrondheim}{{NTNU} in {T}rondheim}
+    \newcommand{\NTNUGjoevik}{{NTNU} in {G}j\o{}vik}
+    \newcommand{\NTNUAalesund}{{NTNU} in {\AA}lesund}
+    \AtBeginDocument{
+        \renewcommand{\lstlistingname}{Code listing}
+        \renewcommand{\lstlistlistingname}{Code Listings}
+        \crefname{listing}{Code listing}{Code listings}
+        \crefname{paper}{Paper}{Papers}
+        \addto\captionsamerican{
+            \renewcommand{\contentsname}{Contents}
+            \renewcommand{\listfigurename}{Figures}
+            \renewcommand{\listtablename}{Tables}
+            \renewcommand{\glossaryname}{Glossary}
+            \renewcommand{\acronymname}{Acronyms}
+        }
+    }
+\fi
+
+% British
+\ifmyclass@british
+    \capitalizetrue
+    \def\papername{Paper}
+    \newcommand{\NTNU}{{N}orwegian {U}niversity of {S}cience and {T}echnology}
+    \newcommand{\NTNUTrondheim}{{NTNU} in {T}rondheim}
+    \newcommand{\NTNUGjoevik}{{NTNU} in {G}j\o{}vik}
+    \newcommand{\NTNUAalesund}{{NTNU} in {\AA}lesund}
+    \AtBeginDocument{
+        \renewcommand{\lstlistingname}{Code listing}
+        \renewcommand{\lstlistlistingname}{Code Listings}
+        \crefname{listing}{Code listing}{Code listings}
+        \crefname{paper}{Paper}{Papers}
+        \addto\captionsbritish{
+            \renewcommand{\contentsname}{Contents}
+            \renewcommand{\listfigurename}{Figures}
+            \renewcommand{\listtablename}{Tables}
+            \renewcommand{\glossaryname}{Glossary}
+            \renewcommand{\acronymname}{Acronyms}
+        }
+    }
+\fi
+
+% Bokmål
+\ifmyclass@norsk
+    \def\papername{Artikkel}
+    \newcommand{\NTNU}{{N}orges teknisk-naturvitenskapelige universitet}
+    \newcommand{\NTNUTrondheim}{{NTNU} i {T}rondheim}
+    \newcommand{\NTNUGjoevik}{{NTNU} i {G}j\o{}vik}
+    \newcommand{\NTNUAalesund}{{NTNU} i {\AA}lesund}
+    \AtBeginDocument{
+        \renewcommand{\lstlistingname}{Kodeliste}
+        \renewcommand{\lstlistlistingname}{Kodelister}
+        \crefname{listing}{kodeliste}{kodelister}
+        \crefname{equation}{ligning}{ligninger}
+        \crefname{appendix}{vedlegg}{vedlegg}
+        \crefname{paper}{artikkel}{artikler}
+        \addto\captionsnorsk{
+            \renewcommand{\appendixname}{Vedlegg}
+            \renewcommand{\glossaryname}{Ordliste}
+            \renewcommand{\acronymname}{Akronymer}
+        }
+    }
+\fi
+
+% Nynorsk
+\ifmyclass@nynorsk
+    \def\papername{Artikkel}
+    \newcommand{\NTNU}{{N}oregs teknisk-naturvitskaplege universitet}
+    \newcommand{\NTNUTrondheim}{{NTNU} i {T}rondheim}
+    \newcommand{\NTNUGjoevik}{{NTNU} i {G}j\o{}vik}
+    \newcommand{\NTNUAalesund}{{NTNU} i {\AA}lesund}
+    \AtBeginDocument{
+        \renewcommand{\lstlistingname}{Kodeliste}
+        \renewcommand{\lstlistlistingname}{Kodelister}
+        \crefname{listing}{kodeliste}{kodelister}
+        \crefname{equation}{likning}{likningar}
+        \crefname{table}{tabell}{tabellar}
+        \crefname{figure}{figur}{figurar}
+        \crefname{section}{avsnitt}{avsnitt}
+        \crefname{chapter}{kapittel}{kapittel}
+        \crefname{appendix}{vedlegg}{vedlegg}
+        \crefname{paper}{artikkel}{artiklar}
+        \renewcommand{\appendixname}{Vedlegg}
+        \addto\captionsnynorsk{
+            \renewcommand{\appendixname}{Vedlegg}
+            \renewcommand{\glossaryname}{Ordliste}
+            \renewcommand{\acronymname}{Akronym}
+        }
+    }
+\fi
